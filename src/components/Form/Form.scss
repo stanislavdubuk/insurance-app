@@ -3,10 +3,12 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  padding: 20px 40px;
 
-  width: 400px;
+  border: 2px solid var(--border-color);
+  border-radius: 10px;
 }
 
-.btnCalculate {
-  margin-top: 10px;
+.btn__calculate {
+  margin-top: 14px;
 }
