@@ -9,17 +9,8 @@
   input {
     flex: 1;
 
-    padding: 10px;
-
-    border: 1px solid var(--border-color-grey);
-    border-radius: 8px;
-
     font-size: 10px;
     outline: none;
-
-    &:focus {
-      border: 1px solid var(--main-color);
-    }
   }
 }
 
@@ -27,4 +18,9 @@
   flex: 1;
 
   text-align: center;
+}
+
+.date__picker {
+  width: 200px;
+  height: 34px;
 }

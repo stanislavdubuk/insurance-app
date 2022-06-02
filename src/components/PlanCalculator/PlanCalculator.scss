@@ -47,6 +47,25 @@
   &__sum {
     max-width: 100px;
   }
+
+  &__duration {
+    display: flex;
+    align-items: center;
+
+    margin-top: 20px;
+  }
+
+  &__summary {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    margin-top: 10px;
+
+    span {
+      margin-right: 30px;
+    }
+  }
 }
 
 .risks {

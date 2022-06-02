@@ -7,10 +7,13 @@ import { RangeSlider } from '../RangeSlider';
 import { INSURANCE_PLANS } from '../../constants';
 
 import './PlanCalculator.scss';
+import { Input } from '../Input';
 
 export const PlanCalculator = observer(({ insuranceStore }) => {
+  const { setPlan } = insuranceStore;
+
   const handleChoosePlan = (plan) => {
-    insuranceStore.setPlan(plan);
+    setPlan(plan);
   };
 
   return (
@@ -50,6 +53,16 @@ export const PlanCalculator = observer(({ insuranceStore }) => {
         </div>
       )}
       <RangeSlider insuranceStore={insuranceStore} />
+      <div className='plan__duration'>
+        <Input inputType='planStart' />
+        <Input inputType='planEnd' />
+      </div>
+
+      <div className='plan__summary'>
+        <span>Полная страховая премия</span>
+        <span>3000</span>
+        <button className='button'>Оформить полис</button>
+      </div>
     </div>
   );
 });
