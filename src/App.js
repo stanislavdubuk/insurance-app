@@ -3,7 +3,8 @@ import moment from 'moment';
 
 import { Container } from './components/Container';
 import { Form } from './components/Form';
-import { PlanCalculator } from './components/PlanCalculator/PlanCalculator';
+import { PlanList } from './components/PlanList';
+import { PlanCalculator } from './components/PlanCalculator';
 
 import { InsuranceStore } from './store/InsuranceStore';
 
@@ -13,6 +14,7 @@ export const App = () => {
   return (
     <Container>
       <Form today={today} insuranceStore={InsuranceStore} />
+      <PlanList insuranceStore={InsuranceStore} />
       <PlanCalculator today={today} insuranceStore={InsuranceStore} />
     </Container>
   );

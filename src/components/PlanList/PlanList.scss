@@ -1,0 +1,59 @@
+.list {
+  margin-top: 20px;
+  width: 674px;
+  font-size: 12px;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    padding-left: 60px;
+    background-color: var(--main-color);
+    border-radius: 4px;
+    color: var(--white);
+  }
+
+  &__errorMessage {
+    margin-top: 20px;
+    padding: 20px 0;
+    width: 400px;
+
+    border: 1px solid var(--border-color-grey);
+    border-radius: 8px;
+
+    font-size: 12px;
+    text-align: center;
+  }
+
+  ul {
+    margin-top: 10px;
+  }
+}
+
+.plan {
+  display: flex;
+  align-items: center;
+
+  margin-bottom: 10px;
+  &__checkbox {
+    margin: 0 18px !important;
+    padding: 0 !important;
+  }
+
+  &__title {
+    width: 238px;
+  }
+
+  &__premium {
+    width: 246px;
+  }
+
+  &__sum {
+    max-width: 100px;
+  }
+}
+
+.Mui-checked {
+  color: var(--main-color) !important;
+}

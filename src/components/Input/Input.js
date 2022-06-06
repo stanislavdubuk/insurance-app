@@ -9,20 +9,13 @@ import { DateInput } from '../DateInput/DateInput';
 import './Input.scss';
 
 export const Input = observer(({ inputValue, onChange, inputType, value }) => {
-  const heightType = inputType === 'height';
-  const weightType = inputType === 'weight';
-  const genderType = inputType === 'gender';
-  const dateOfBirthType = inputType === 'dateOfBirth';
-  const planStartType = inputType === 'planStart';
-  const planEndType = inputType === 'planEnd';
-
   const getPlaceholderValue = () => {
-    if (heightType) return 'Рост';
-    if (weightType) return 'Вес';
-    if (genderType) return 'Пол';
-    if (dateOfBirthType) return 'Дата рождения';
-    if (planStartType) return 'Дата начала';
-    if (planEndType) return 'Дата окончания';
+    if (inputType === 'height') return 'Рост';
+    if (inputType === 'weight') return 'Вес';
+    if (inputType === 'gender') return 'Пол';
+    if (inputType === 'dateOfBirth') return 'Дата рождения';
+    if (inputType === 'planStart') return 'Дата начала';
+    if (inputType === 'planEnd') return 'Дата окончания';
   };
 
   const handleChange = (value) => {
@@ -41,7 +34,7 @@ export const Input = observer(({ inputValue, onChange, inputType, value }) => {
           onChange={(e) => handleChange(e.target.value)}
           endAdornment={
             <InputAdornment position='end'>
-              {heightType ? 'см' : 'кг'}
+              {inputType === 'height' ? 'см' : 'кг'}
             </InputAdornment>
           }
         />
@@ -80,12 +73,7 @@ export const Input = observer(({ inputValue, onChange, inputType, value }) => {
         />
       )}
       {inputType === 'planEnd' && (
-        <DateInput
-          value={value}
-          onChange={onChange}
-          inputType={inputType}
-          disabled
-        />
+        <DateInput value={value} inputType={inputType} disabled />
       )}
     </div>
   );

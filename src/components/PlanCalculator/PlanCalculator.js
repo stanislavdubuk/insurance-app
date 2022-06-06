@@ -1,18 +1,15 @@
 import * as React from 'react';
 import { observer } from 'mobx-react';
+import { Alert, Snackbar } from '@mui/material';
 import moment from 'moment';
 
-import Checkbox from '@mui/material/Checkbox';
 import { RangeSlider } from '../RangeSlider';
 import { Input } from '../Input';
-
-import { INSURANCE_PLANS } from '../../constants';
 
 import './PlanCalculator.scss';
 
 export const PlanCalculator = observer(({ insuranceStore, today }) => {
   const {
-    setPlan,
     setInputValue,
     planStart,
     planEnd,
@@ -20,10 +17,14 @@ export const PlanCalculator = observer(({ insuranceStore, today }) => {
     chosenPlanDuration,
     totalInsurancePremium,
     setTotalInsurancePremium,
+    successMessageOptions,
+    setSuccessMessageOptions,
   } = insuranceStore;
 
-  const handleChoosePlan = (plan) => {
-    setPlan(plan);
+  const { vertical, horizontal, open } = successMessageOptions;
+
+  const handleClick = (isOpen) => {
+    setSuccessMessageOptions(isOpen);
   };
 
   React.useEffect(() => {
@@ -43,34 +44,12 @@ export const PlanCalculator = observer(({ insuranceStore, today }) => {
     setTotalInsurancePremium();
   }, [chosenPlan, setTotalInsurancePremium, chosenPlanDuration]);
 
+  if (!chosenPlan.id) return null;
+
   return (
     <div className='calculator'>
-      <div className='calculator__header'>
-        <div>Название полиса</div>
-        <div>Страховая премия</div>
-        <div>Страховое покрытие</div>
-      </div>
-      <ul>
-        {INSURANCE_PLANS.map((plan, index) => {
-          const checked = plan.id === insuranceStore.chosenPlan.id;
-
-          return (
-            <li className='plan' key={`PLAN_${plan.id}_${index}`}>
-              <Checkbox
-                checked={checked}
-                onChange={() => handleChoosePlan(plan)}
-                sx={{ color: '#eaeaea' }}
-                className='plan__checkbox'
-              />
-              <span className='plan__title'>{plan.title}</span>
-              <span className='plan__premium'>{plan.premium}</span>
-              <span className='plan__sum'>{plan.sum}</span>
-            </li>
-          );
-        })}
-      </ul>
       {Boolean(insuranceStore.chosenPlan.risks) && (
-        <div className='risks'>
+        <div className='calculator__risks'>
           <span>Риски</span>
           <ul>
             {insuranceStore.chosenPlan.risks.map((risk, riskIndex) => {
@@ -80,7 +59,7 @@ export const PlanCalculator = observer(({ insuranceStore, today }) => {
         </div>
       )}
       <RangeSlider insuranceStore={insuranceStore} />
-      <div className='plan__duration'>
+      <div className='calculator__duration'>
         <Input
           value={planStart}
           onChange={setInputValue}
@@ -89,10 +68,23 @@ export const PlanCalculator = observer(({ insuranceStore, today }) => {
         <Input value={planEnd} inputType='planEnd' />
       </div>
 
-      <div className='plan__summary'>
+      <Snackbar
+        open={open}
+        autoHideDuration={6000}
+        onClose={() => handleClick(false)}
+        anchorOrigin={{ vertical, horizontal }}
+      >
+        <Alert severity='success' sx={{ width: '100%' }}>
+          Вы оформили страховой полис "{chosenPlan.title}"
+        </Alert>
+      </Snackbar>
+
+      <div className='calculator__summary'>
         <span>Полная страховая премия</span>
-        <span>{totalInsurancePremium}</span>
-        <button className='button'>Оформить полис</button>
+        {totalInsurancePremium && <span>{totalInsurancePremium}</span>}
+        <button className='button' onClick={() => handleClick(true)}>
+          Оформить полис
+        </button>
       </div>
     </div>
   );
