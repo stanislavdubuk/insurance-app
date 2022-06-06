@@ -5,18 +5,43 @@ import { Input } from '../Input';
 
 import './Form.scss';
 
-export const Form = observer(({ insuranceStore }) => {
-  const { setInputValue } = insuranceStore;
+export const Form = observer(({ insuranceStore, today }) => {
+  const {
+    heightInputValue: userHeight,
+    weightInputValue: userWeight,
+    genderInputValue: userGender,
+    dateOfBirth,
+    setInputValue,
+  } = insuranceStore;
 
-  console.log(insuranceStore.dateOfBirth);
+  React.useEffect(() => {
+    setInputValue(today, 'dateOfBirth');
+  }, [today, setInputValue]);
 
   return (
     <div className='form'>
       <h2>Введите параметры для подбора страховки</h2>
-      <Input onChange={setInputValue} inputType='height' />
-      <Input onChange={setInputValue} inputType='weight' />
-      <Input onChange={setInputValue} inputType='gender' />
-      <Input onChange={setInputValue} inputType='dateOfBirth' />
+      <Input
+        inputValue={userHeight}
+        onChange={setInputValue}
+        inputType='height'
+      />
+      <Input
+        inputValue={userWeight}
+        onChange={setInputValue}
+        inputType='weight'
+      />
+      <Input
+        inputValue={userGender}
+        onChange={setInputValue}
+        inputType='gender'
+      />
+      <Input
+        value={dateOfBirth}
+        inputValue={dateOfBirth}
+        onChange={setInputValue}
+        inputType='dateOfBirth'
+      />
       <button className='button btn__calculate'>Рассчитать</button>
     </div>
   );

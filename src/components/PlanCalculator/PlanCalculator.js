@@ -1,20 +1,47 @@
 import * as React from 'react';
 import { observer } from 'mobx-react';
-import Checkbox from '@mui/material/Checkbox';
+import moment from 'moment';
 
+import Checkbox from '@mui/material/Checkbox';
 import { RangeSlider } from '../RangeSlider';
+import { Input } from '../Input';
 
 import { INSURANCE_PLANS } from '../../constants';
 
 import './PlanCalculator.scss';
-import { Input } from '../Input';
 
-export const PlanCalculator = observer(({ insuranceStore }) => {
-  const { setPlan } = insuranceStore;
+export const PlanCalculator = observer(({ insuranceStore, today }) => {
+  const {
+    setPlan,
+    setInputValue,
+    planStart,
+    planEnd,
+    chosenPlan,
+    chosenPlanDuration,
+    totalInsurancePremium,
+    setTotalInsurancePremium,
+  } = insuranceStore;
 
   const handleChoosePlan = (plan) => {
     setPlan(plan);
   };
+
+  React.useEffect(() => {
+    setInputValue(today, 'planStart');
+  }, [today, setInputValue]);
+
+  React.useEffect(() => {
+    const calculatedPlanEnd = moment(planStart).add(
+      chosenPlanDuration,
+      'month'
+    );
+
+    setInputValue(calculatedPlanEnd, 'planEnd');
+  }, [planStart, chosenPlanDuration, setInputValue]);
+
+  React.useEffect(() => {
+    setTotalInsurancePremium();
+  }, [chosenPlan, setTotalInsurancePremium, chosenPlanDuration]);
 
   return (
     <div className='calculator'>
@@ -54,13 +81,17 @@ export const PlanCalculator = observer(({ insuranceStore }) => {
       )}
       <RangeSlider insuranceStore={insuranceStore} />
       <div className='plan__duration'>
-        <Input inputType='planStart' />
-        <Input inputType='planEnd' />
+        <Input
+          value={planStart}
+          onChange={setInputValue}
+          inputType='planStart'
+        />
+        <Input value={planEnd} inputType='planEnd' />
       </div>
 
       <div className='plan__summary'>
         <span>Полная страховая премия</span>
-        <span>3000</span>
+        <span>{totalInsurancePremium}</span>
         <button className='button'>Оформить полис</button>
       </div>
     </div>

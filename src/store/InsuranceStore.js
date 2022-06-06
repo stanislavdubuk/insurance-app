@@ -3,10 +3,13 @@ import { action, makeObservable, observable } from 'mobx';
 export class InsuranceStoreImpl {
   heightInputValue = '';
   weightInputValue = '';
-  genderInputValue = null;
-  dateOfBirth = '';
+  genderInputValue = 1;
+  dateOfBirth = {};
   chosenPlan = {};
   chosenPlanDuration = 14;
+  planStart = {};
+  planEnd = {};
+  totalInsurancePremium = null;
 
   constructor() {
     makeObservable(this, {
@@ -16,9 +19,13 @@ export class InsuranceStoreImpl {
       dateOfBirth: observable,
       chosenPlan: observable,
       chosenPlanDuration: observable,
+      planStart: observable,
+      planEnd: observable,
+      totalInsurancePremium: observable,
       setInputValue: action,
       setPlan: action,
       setPlanDuration: action,
+      setTotalInsurancePremium: action,
     });
   }
 
@@ -27,6 +34,8 @@ export class InsuranceStoreImpl {
     if (inputType === 'weight') this.weightInputValue = value;
     if (inputType === 'gender') this.genderInputValue = value;
     if (inputType === 'dateOfBirth') this.dateOfBirth = value;
+    if (inputType === 'planStart') this.planStart = value;
+    if (inputType === 'planEnd') this.planEnd = value;
   };
 
   setPlan = (plan) => {
@@ -39,6 +48,11 @@ export class InsuranceStoreImpl {
 
   setPlanDuration = (duration) => {
     this.chosenPlanDuration = duration;
+  };
+
+  setTotalInsurancePremium = () => {
+    this.totalInsurancePremium =
+      this.chosenPlan.premium * this.chosenPlanDuration;
   };
 }
 

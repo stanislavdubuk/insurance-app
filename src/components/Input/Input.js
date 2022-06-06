@@ -1,20 +1,14 @@
 import * as React from 'react';
 import { observer } from 'mobx-react';
 import { InputAdornment, OutlinedInput } from '@mui/material';
-import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
-import TextField from '@mui/material/TextField';
 
-import moment from 'moment';
-import 'moment/locale/ru';
+import { DateInput } from '../DateInput/DateInput';
 
 import './Input.scss';
-// import { DateInput } from '../DateInput/DateInput';
 
-export const Input = observer(({ onChange, inputType }) => {
+export const Input = observer(({ inputValue, onChange, inputType, value }) => {
   const heightType = inputType === 'height';
   const weightType = inputType === 'weight';
   const genderType = inputType === 'gender';
@@ -35,14 +29,6 @@ export const Input = observer(({ onChange, inputType }) => {
     onChange(value, inputType);
   };
 
-  const handleDateChange = (value) => {
-    const formattedDate = moment(value).format('DD/MM/YYYY');
-
-    onChange(formattedDate, inputType);
-  };
-
-  const today = moment().clone().format('YYYY-MM-DD');
-
   return (
     <div className='input__container'>
       <label className='input__label'>{getPlaceholderValue()}</label>
@@ -50,6 +36,7 @@ export const Input = observer(({ onChange, inputType }) => {
         <OutlinedInput
           sx={{ width: '200px' }}
           size='small'
+          type='number'
           placeholder={getPlaceholderValue()}
           onChange={(e) => handleChange(e.target.value)}
           endAdornment={
@@ -70,40 +57,34 @@ export const Input = observer(({ onChange, inputType }) => {
           labelId='demo-simple-select-label'
           id='demo-simple-select'
           onChange={(e) => handleChange(e.target.value)}
+          value={inputValue}
         >
           <MenuItem value={1}>Мужской</MenuItem>
           <MenuItem value={2}>Женский</MenuItem>
         </Select>
       )}
       {inputType === 'dateOfBirth' && (
-        <div className='date__picker'>
-          <LocalizationProvider dateAdapter={AdapterMoment}>
-            <DesktopDatePicker
-              disableFuture
-              inputFormat='DD/MM/YYYY'
-              value={today}
-              onChange={handleDateChange}
-              renderInput={(params) => (
-                <TextField size='small' fullWidth {...params} />
-              )}
-            />
-          </LocalizationProvider>
-        </div>
+        <DateInput
+          value={value}
+          onChange={onChange}
+          inputType={inputType}
+          disableFuture
+        />
       )}
       {inputType === 'planStart' && (
-        <OutlinedInput
-          sx={{ width: '150px' }}
-          size='small'
-          placeholder={getPlaceholderValue()}
-          onChange={(e) => handleChange(e.target.value)}
+        <DateInput
+          value={value}
+          disablePast
+          onChange={onChange}
+          inputType={inputType}
         />
       )}
       {inputType === 'planEnd' && (
-        <OutlinedInput
-          sx={{ width: '150px' }}
-          size='small'
-          placeholder={getPlaceholderValue()}
-          onChange={(e) => handleChange(e.target.value)}
+        <DateInput
+          value={value}
+          onChange={onChange}
+          inputType={inputType}
+          disabled
         />
       )}
     </div>
